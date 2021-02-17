@@ -1,7 +1,6 @@
 import {useState} from 'react'
 
-import UserAccountInterface from '../Interfaces/UserAccountInterface'
-
+import UserAccountAdapter from '../Adapters/UserAccountAdapter'
 export default function(){
 
     const [username, setUsername] = useState("griffinpoole5@gmail.com");
@@ -10,14 +9,9 @@ export default function(){
     const [errorMsg, setErrorMsg] = useState("");
 
     const handleSubmit = () => {
-        UserAccountInterface.login(username, password).then((response) => {
-            if(response.Success){
-                window.localStorage.setItem("id", response.id)
-                window.localStorage.setItem("token", response.token)
-            } else {
-                window.localStorage.removeItem("id")
-                window.localStorage.removeItem("token")
-                setErrorMsg(response.Error);
+        UserAccountAdapter.login(username, password).then((success) => {
+            if(!success){
+                setErrorMsg("Invalid credentials");
                 setShowError(true);
             }
         })
