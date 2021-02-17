@@ -3,12 +3,12 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import defaultStore from './redux/defaultStore';
 
-import App from './App';
+import AppRouter from './AppRouter';
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={defaultStore}>
-      <App/>
+      <AppRouter/>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')

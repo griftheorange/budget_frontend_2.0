@@ -1,6 +1,6 @@
 export default class UserAccountInterface {
     static login(userEmail, password){
-        fetch('http://localhost:8080/user/login', {
+        return fetch('http://localhost:8080/user/login', {
             method:'POST',
             headers:{
                 'Accept': 'application/json',
@@ -10,8 +10,6 @@ export default class UserAccountInterface {
                 'userEmail':userEmail,
                 'password':password
             })
-        }).then(response => response.json()).then((body) => {
-            console.log(body)
-        })
+        }).then(response => response.json())
     }
 }
