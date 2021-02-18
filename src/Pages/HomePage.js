@@ -6,7 +6,7 @@ export default function(props){
     const [render, setRender] = useState(false);
 
     useEffect(() => {
-        renderOrReroutOnValidToken(setRender, props.history)
+        renderOrReroutOnValidToken(setRender, props.history, "/login")
     }, [])
 
     return render ? (

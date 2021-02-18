@@ -1,4 +1,12 @@
 export default class UserAccountAdaptor {
+
+    static handleErrors(response){
+        if(!response.ok){
+            throw Error(response.statusText)
+        }
+        return response
+    }
+
     static login(userEmail, password){
         return fetch('http://localhost:8080/user/login', {
             method:'POST',
@@ -11,6 +19,7 @@ export default class UserAccountAdaptor {
                 'password':password
             })
         })
+        .then(this.handleErrors)
         .then(response => response.json())
         .then((body) => {
             if(body.Success){
@@ -22,6 +31,8 @@ export default class UserAccountAdaptor {
                 window.localStorage.removeItem("token")
                 return false;
             }
+        }).catch((error) => {
+            console.log(error)
         })
     }
 
@@ -38,7 +49,9 @@ export default class UserAccountAdaptor {
                 'id':id,
                 'token':token
             })
-        }).then(response => response.json())
+        })
+        .then(this.handleErrors)
+        .then(response => response.json())
         .then((body) => {
             if(body.Success){
                 window.localStorage.setItem("id", body.id)
@@ -49,6 +62,9 @@ export default class UserAccountAdaptor {
                 window.localStorage.removeItem("token")
                 return false;
             }
+        }).catch((error) => {
+            console.log(error)
+            return Promise.reject()
         })
     }
 }
