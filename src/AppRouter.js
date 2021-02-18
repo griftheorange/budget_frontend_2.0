@@ -1,3 +1,5 @@
+import './CSS/App.css'
+
 import { useEffect } from 'react';
 import {
     BrowserRouter as Router,
@@ -8,7 +10,6 @@ import {
 import LoginPage from './Pages/LoginPage';
 import HomePage from './Pages/HomePage';
 import ErrorPage from './Pages/ErrorPage';
-
 
 export default function(){
 

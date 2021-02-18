@@ -31,8 +31,6 @@ export default class UserAccountAdaptor {
                 window.localStorage.removeItem("token")
                 return false;
             }
-        }).catch((error) => {
-            console.log(error)
         })
     }
 
@@ -62,9 +60,6 @@ export default class UserAccountAdaptor {
                 window.localStorage.removeItem("token")
                 return false;
             }
-        }).catch((error) => {
-            console.log(error)
-            return Promise.reject()
         })
     }
 }

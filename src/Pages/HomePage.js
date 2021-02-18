@@ -1,17 +1,27 @@
 import {useEffect, useState} from 'react'
-import renderOrReroutOnValidToken from '../CrossCuttingFuncitons/renderOrReroutOnValidToken'
+import Rerouters from '../CrossCuttingFunctions/Rerouters'
+
+import NavBar from '../Components/NavBar'
 
 export default function(props){
 
     const [render, setRender] = useState(false);
 
     useEffect(() => {
-        renderOrReroutOnValidToken(setRender, props.history, "/login")
+        Rerouters.refreshTokenOrRerout(props.history, "/login").then((success) => {
+            console.log(success)
+            if(success){
+                setRender(true)
+            }
+        })
     }, [])
 
     return render ? (
+        <>
+        <NavBar history={props.history}/>
         <div id="home-page-wrapper">
-            <p>Hello</p>
+            <p>Hello {window.localStorage.getItem("id")}</p>
         </div>
+        </>
     ) : null
 }

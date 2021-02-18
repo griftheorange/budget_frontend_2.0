@@ -1,7 +1,8 @@
 import {useState} from 'react'
 
-import UserAccountAdapter from '../Adapters/UserAccountAdapter'
-export default function(){
+import Rerouters from '../CrossCuttingFunctions/Rerouters'
+
+export default function(props){
 
     const [username, setUsername] = useState("griffinpoole5@gmail.com");
     const [password, setPassword] = useState("secret");
@@ -9,7 +10,8 @@ export default function(){
     const [errorMsg, setErrorMsg] = useState("");
 
     const handleSubmit = () => {
-        UserAccountAdapter.login(username, password).then((success) => {
+        Rerouters.loginOrRerout(username, password, props.history).then((success) => {
+            console.log(success)
             if(!success){
                 setErrorMsg("Invalid credentials");
                 setShowError(true);
