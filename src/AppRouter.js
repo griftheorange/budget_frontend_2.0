@@ -1,6 +1,6 @@
+import 'semantic-ui-css/semantic.min.css'
 import './CSS/App.css'
 
-import { useEffect } from 'react';
 import {
     BrowserRouter as Router,
     Switch,

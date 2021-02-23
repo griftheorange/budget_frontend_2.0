@@ -1,4 +1,5 @@
 import ApplicationAdapter from '../Adapters/ApplicationAdapter'
+import {Icon} from 'semantic-ui-react'
 
 export default function(props){
 
@@ -12,11 +13,16 @@ export default function(props){
         ApplicationAdapter.shutdown()
     }
 
+    const handleProfile = () => {
+
+    }
+
     return (
         <div className="navbar">
-            <div><a>Home</a></div>
-            <div><a onClick={handleLogout}>Logout</a></div>
-            <div><a onClick={handleShutdown}>Shutdown Server</a></div>
+            <div><a>Home</a></div>|
+            <div><a onClick={handleLogout}>Logout</a></div>|
+            <div><a onClick={handleShutdown}>Shutdown Server</a></div>|
+            <div><a onClick={handleProfile}><Icon name="user circle"/>{window.localStorage.getItem("id")}</a></div>
         </div>
     )
 }

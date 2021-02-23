@@ -1,0 +1,71 @@
+#home-page-wrapper {
+    display: flex;
+    height:100%;
+}
+
+#home-page-wrapper .home-menu-bar {
+    width:400px;
+    border-right: 1px solid black;
+    height:100%;
+    padding:0.5em;
+}
+
+#home-page-wrapper .home-table-bar {
+    flex-grow:1;
+    padding:0.5em;
+}
+
+#home-page-wrapper .home-table-bar h3 {
+    font-size: 1.8em;
+    margin: 0.5em 0 0.5em 0
+}
+
+#home-page-wrapper .home-table-bar .data-tables-block {
+    padding:0.3em;
+    margin-bottom: 1em;
+}
+
+#home-page-wrapper .home-table-bar .data-tables-block .header {
+    font-weight: bold;
+    font-size:1em;
+    border-bottom: 1px solid black;
+}
+
+#home-page-wrapper .home-table-bar .data-tables-block .segment {
+    display:flex;
+}
+
+#home-page-wrapper .home-table-bar .data-tables-block .segment .column {
+    width:20%;
+}
+
+#home-page-wrapper .home-table-bar .data-tables-block .segment .column.table-name {
+    display:flex
+}
+
+#home-page-wrapper .home-table-bar .data-tables-block .data-table-card {
+    background-color: #f5f5f5;
+    padding:0.5em;
+    margin-top:0.5em;
+    margin-bottom: 0.5em;
+}
+
+#home-page-wrapper .home-table-bar .data-tables-block .data-table-card .column div {
+    margin-bottom:0.5em;
+}
+
+#home-page-wrapper .home-table-bar .data-tables-block .data-table-card .column i:hover {
+    cursor: pointer;
+}
+
+#home-page-wrapper .home-table-bar .data-tables-block .data-table-card .column input {
+    width:calc(100% - 30px)
+}
+
+#home-page-wrapper .home-table-bar .data-tables-block .data-table-card .column div:last-child{
+    margin-bottom: 0;
+}
+
+#home-page-wrapper .home-table-bar .data-tables-block .data-table-card:hover {
+    background-color: #dedede;
+}

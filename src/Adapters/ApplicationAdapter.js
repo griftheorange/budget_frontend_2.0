@@ -1,6 +1,8 @@
+import Properties from '../Services/ApplicationProperties'
+
 export default class ApplicationAdaptor {
     static shutdown(){
-        fetch('http://localhost:8080/shutdown', {
+        fetch(`${Properties.apiURL}/shutdown`, {
             method:'POST'
         })
     }

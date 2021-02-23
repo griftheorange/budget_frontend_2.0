@@ -1,6 +1,6 @@
 import {useState} from 'react'
 
-import Rerouters from '../CrossCuttingFunctions/Rerouters'
+import Rerouters from '../Services/Rerouters'
 
 export default function(props){
 
@@ -11,7 +11,6 @@ export default function(props){
 
     const handleSubmit = () => {
         Rerouters.loginOrRerout(username, password, props.history).then((success) => {
-            console.log(success)
             if(!success){
                 setErrorMsg("Invalid credentials");
                 setShowError(true);

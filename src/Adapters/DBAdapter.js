@@ -1,3 +1,5 @@
+import Properties from '../Services/ApplicationProperties'
+
 export default class UserAccountAdaptor {
 
     static handleErrors(response){
@@ -8,7 +10,7 @@ export default class UserAccountAdaptor {
     }
 
     static login(userEmail, password){
-        return fetch('http://localhost:8080/user/login', {
+        return fetch(`${Properties.apiURL}/user/login`, {
             method:'POST',
             headers:{
                 'Accept': 'application/json',
@@ -37,7 +39,7 @@ export default class UserAccountAdaptor {
     static validateAndRefreshToken(){
         let id = window.localStorage.getItem("id");
         let token = window.localStorage.getItem("token");
-        return fetch('http://localhost:8080/user/refresh-token', {
+        return fetch(`${Properties.apiURL}/user/refresh-token`, {
             method:'POST',
             headers:{
                 'Accept': 'application/json',
@@ -61,5 +63,42 @@ export default class UserAccountAdaptor {
                 return false;
             }
         })
+    }
+
+    static fetchDataTablesForUser(){
+        let id = window.localStorage.getItem("id");
+        let token = window.localStorage.getItem("token");
+        return fetch(`${Properties.apiURL}/data-table/index`, {
+            method:"POST",
+            headers:{
+                'Accept': 'application/json',
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                'id':id,
+                'token':token
+            })
+        })
+        .then(this.handleErrors)
+        .then(response => response.json())
+    }
+
+    static fetchChangeDataTableName(tableName, newName){
+        let id = window.localStorage.getItem("id");
+        let token = window.localStorage.getItem("token");
+        return fetch(`${Properties.apiURL}/data-table/${tableName}`, {
+            method:"PUT",
+            headers:{
+                'Accept': 'application/json',
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                'id':id,
+                'token':token,
+                'newName':newName
+            })
+        })
+        .then(this.handleErrors)
+        .then(response => response.json())
     }
 }

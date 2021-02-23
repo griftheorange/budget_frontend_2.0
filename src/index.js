@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import defaultStore from './redux/defaultStore';
+import defaultStore from './Redux/defaultStore';
 
 import AppRouter from './AppRouter';
 

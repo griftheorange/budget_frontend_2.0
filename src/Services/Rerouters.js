@@ -1,11 +1,11 @@
-import UserAccountAdapter from '../Adapters/UserAccountAdapter'
+import DBAdapter from '../Adapters/DBAdapter'
 
-export default class UserServices {
-
+export default class Rerouters {
+    
     //Attempts to validate and refresh a users token. In the event of invalid token, will clear tokens and rerout to provided url. On success, refreshes token
     //On connection error routes to error page
     static refreshTokenOrRerout(history, route){
-        return UserAccountAdapter.validateAndRefreshToken().then((success) => {
+        return DBAdapter.validateAndRefreshToken().then((success) => {
             if(!success){
                 history.push(route);
             }
@@ -17,8 +17,8 @@ export default class UserServices {
     }
 
     //Attempts user login fetch, if successful, routes to home page. On failure routes to error page and rejects promise
-    static loginOrRerout(userEmail, password, history, route){
-        return UserAccountAdapter.login(userEmail, password).then((success) => {
+    static loginOrRerout(userEmail, password, history){
+        return DBAdapter.login(userEmail, password).then((success) => {
             if(success){
                 history.push("/")
             }
