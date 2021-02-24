@@ -44,7 +44,7 @@
 }
 
 #home-page-wrapper .home-table-bar .data-tables-block .data-table-card {
-    background-color: #f5f5f5;
+    background-color: #f0f0f0;
     padding:0.5em;
     margin-top:0.5em;
     margin-bottom: 0.5em;
@@ -52,6 +52,10 @@
 
 #home-page-wrapper .home-table-bar .data-tables-block .data-table-card .column div {
     margin-bottom:0.5em;
+}
+
+#home-page-wrapper .home-table-bar .data-tables-block .data-table-card .column .entry-options {
+    display:flex;
 }
 
 #home-page-wrapper .home-table-bar .data-tables-block .data-table-card .column i:hover {

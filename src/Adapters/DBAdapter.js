@@ -101,4 +101,56 @@ export default class UserAccountAdaptor {
         .then(this.handleErrors)
         .then(response => response.json())
     }
+
+    static fetchAddDataTable(tableName){
+        let id = window.localStorage.getItem("id");
+        let token = window.localStorage.getItem("token");
+        return fetch(`${Properties.apiURL}/data-table/add-table`, {
+            method:"POST",
+            headers:{
+                'Accept': 'application/json',
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                'id':id,
+                'token':token,
+                'tableName':tableName
+            })
+        })
+        .then(this.handleErrors)
+        .then(response => response.json())
+    }
+
+    static fetchAddSeededDataTable(file){
+        let data = new FormData();
+        data.append("id", window.localStorage.getItem("id"));
+        data.append("token", window.localStorage.getItem("token"));
+        data.append("file", file);
+        return fetch(`${Properties.apiURL}/file/upload-seed`, {
+            method:"POST",
+            body: data
+        })
+        .then(response => response.json())
+        .catch((error) => {
+            console.error(error)
+        })
+    }
+
+    static fetchDeleteTable(tableName){
+        let id = window.localStorage.getItem("id");
+        let token = window.localStorage.getItem("token");
+        return fetch(`${Properties.apiURL}/data-table/${tableName}`, {
+            method:"DELETE",
+            headers:{
+                'Accept': 'application/json',
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                'id':id,
+                'token':token
+            })
+        })
+        .then(this.handleErrors)
+        .then(response => response.json())
+    }
 }

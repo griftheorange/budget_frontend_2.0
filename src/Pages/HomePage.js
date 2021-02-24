@@ -1,13 +1,14 @@
 import '../CSS/Home.css'
 
 import {useEffect, useState} from 'react'
-import {Divider, Accordion, Icon} from 'semantic-ui-react'
+import {Divider} from 'semantic-ui-react'
 import UserAccountAdapter from '../Adapters/DBAdapter'
 import Rerouters from '../Services/Rerouters'
+import { connect } from 'react-redux'
 
 import NavBar from '../Components/NavBar'
 import TableSummaryBlock from '../Components/TableSummaryBlock'
-import { connect } from 'react-redux'
+import HomeMenuForm from '../Components/HomeMenuForm'
 
 function HomePage(props){
 
@@ -25,6 +26,10 @@ function HomePage(props){
         })
     }, [])
 
+    const handleNewTable = () => {
+
+    }
+
     return render ? (
         <>
         <NavBar history={props.history}/>
@@ -33,12 +38,7 @@ function HomePage(props){
                 <h1>Welcome to Cashkeeper!</h1>
                 <h2>Your one-stop-shop for financial history tracking</h2>
                 <Divider/>
-                <div className="upload-form">
-                    <Accordion>
-                        <Accordion.Title active={true}><h4><Icon name="dropdown"/>New Datatable</h4></Accordion.Title>
-                        <Accordion.Content active={true}><label for="file-input">Upload file: </label><input type="file" id="file-input"/></Accordion.Content>
-                    </Accordion>
-                </div>
+                <HomeMenuForm/>
             </div>
             <div className="home-table-bar">
                 <h3>DataTables</h3>
