@@ -50,6 +50,7 @@ function TableSummaryCard(props){
                  onCancel={() => {setOpenConfirm(false)}}
                  onConfirm={handleDeleteTable}/>
         <div className="data-table-card segment">
+            <Icon name="download" className="download-button" color="grey"/>
             <div className="table-name column">
                 <div className="entry-options">
                     <Icon name="edit" color="grey" onClick={() => {

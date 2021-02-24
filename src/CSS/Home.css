@@ -33,6 +33,7 @@
 
 #home-page-wrapper .home-table-bar .data-tables-block .segment {
     display:flex;
+    position:relative
 }
 
 #home-page-wrapper .home-table-bar .data-tables-block .segment .column {
@@ -59,6 +60,13 @@
 }
 
 #home-page-wrapper .home-table-bar .data-tables-block .data-table-card .column i:hover {
+    cursor: pointer;
+}
+
+#home-page-wrapper .home-table-bar .data-tables-block .data-table-card i.download-button {
+    position:absolute;
+    right:0.5em;
+    top:0.5em;
     cursor: pointer;
 }
 
