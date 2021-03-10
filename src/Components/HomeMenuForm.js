@@ -53,7 +53,7 @@ function HomeMenuForm(props){
                     <h4>Filter Tables</h4>
                 </Accordion.Title>
                 <Accordion.Content active>
-                    <label for="filter-by-name">Name: </label><input id="filter-by-name"/>
+                    <label htmlFor="filter-by-name">Name: </label><input id="filter-by-name"/>
                 </Accordion.Content>
 
                 {/* ADD NEW DATA TABLE BY NAME OR FILE */}
@@ -75,7 +75,7 @@ function HomeMenuForm(props){
                                 <h4><Icon name="dropdown"/>Upload Seed Table</h4>
                         </Accordion.Title>
                         <Accordion.Content active={activeHash["new-from-upload"]}>
-                            <label for="file-input">Upload file: </label>
+                            <label htmlFor="file-input">Upload file: </label>
                             <input type="file" id="file-input" value={tableFileName} onChange={(e) => {
                                 setTableFileName(e.target.value)
                                 setTableFileInput(e.target.files[0])}}/>
@@ -90,7 +90,7 @@ function HomeMenuForm(props){
                                 <h4><Icon name="dropdown"/>New Blank Table</h4>
                         </Accordion.Title>
                         <Accordion.Content active={activeHash["new-blank"]}>
-                            <label for="name-input">Table Name: </label>
+                            <label htmlFor="name-input">Table Name: </label>
                             <input id="name-input" value={tableNameInput} onChange={(e) => {setTableNameInput(e.target.value)}}/>
                             <button onClick={handleNewBlankTable}>Add Table</button>
                         </Accordion.Content>

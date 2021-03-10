@@ -18,6 +18,15 @@ export default function(props){
         })
     }
 
+    const handleRegister = () => {
+        Rerouters.registerOrRerout(username, password, props.history).then((success) => {
+            if(!success){
+                setErrorMsg("User already registered");
+                setShowError(true);
+            }
+        })
+    }
+
     return (
         <div id="login-form" className="form">
             {showError ? <div className="error-message">{errorMsg}</div> : null}
@@ -30,6 +39,7 @@ export default function(props){
                 <input id="password-input" type="password" value={password} onChange={(e) => {setPassword(e.target.value)}}/>
             </div>
             <button onClick={handleSubmit}>Submit</button>
+            <button onClick={handleRegister}>Create Account</button>
         </div>
     )
 }

@@ -42,6 +42,20 @@ function TableSummaryCard(props){
         })
     }
 
+    const handleDownloadBackup = () => {
+        DBAdapter.downloadBackup(nameValue)
+        .then((blob) => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            let today = new Date()
+            a.download = `${nameValue}-backup-${today.getFullYear()}_${today.getMonth()+1}_${today.getDate()}.xlsx`
+            console.log(a.download)
+            a.click();
+            window.URL.revokeObjectURL(url)
+        })
+    }
+
     return (
         <>
         <Confirm open={openConfirm}
@@ -50,7 +64,7 @@ function TableSummaryCard(props){
                  onCancel={() => {setOpenConfirm(false)}}
                  onConfirm={handleDeleteTable}/>
         <div className="data-table-card segment">
-            <Icon name="download" className="download-button" color="grey"/>
+            <Icon name="download" className="download-button" color="grey" onClick={handleDownloadBackup}/>
             <div className="table-name column">
                 <div className="entry-options">
                     <Icon name="edit" color="grey" onClick={() => {

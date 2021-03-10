@@ -28,4 +28,16 @@ export default class Rerouters {
             return Promise.reject("Error in login attempt, could not connect to server")
         })
     }
+
+    static registerOrRerout(userEmail, password, history){
+        return DBAdapter.register(userEmail, password).then((success) => {
+            if(success){
+                history.push("/")
+            }
+            return success
+        }).catch((error) => {
+            history.push("/error")
+            return Promise.reject("Error in login attempt, could not connect to server")
+        })
+    }
 }
