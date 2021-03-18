@@ -19,12 +19,15 @@
     width:45%;
     height:100%;
     border-left: 1px solid black;
-    overflow-y: scroll;
+    overflow-y: auto;
+    padding-right:0;
 }
 
 .table-page-content-wrapper .table-display table {
     border-collapse: collapse;
     border:0ch;
+    min-width: 100%;
+    padding-right:0;
 }
 
 .table-page-content-wrapper .table-display th {
