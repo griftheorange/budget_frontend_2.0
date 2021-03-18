@@ -53,7 +53,9 @@ function HomeMenuForm(props){
                     <h4>Filter Tables</h4>
                 </Accordion.Title>
                 <Accordion.Content active>
-                    <label htmlFor="filter-by-name">Name: </label><input id="filter-by-name"/>
+                    <label htmlFor="filter-by-name">Name: </label><input id="filter-by-name" 
+                    value={props.tableFilterString}
+                    onChange={(e) => {props.setTableFilterString(e.target.value)}}/>
                 </Accordion.Content>
 
                 {/* ADD NEW DATA TABLE BY NAME OR FILE */}
@@ -103,15 +105,23 @@ function HomeMenuForm(props){
 }
 
 function mapStateToProps(state){
-    return {}
+    return {
+        tableFilterString:state.tableFilterString
+    }
 }
 
 function mapDispatchToProps(dispatch){
     return {
         setUserTables:(tables) => {
             dispatch({
-                type:"SET_USER_TABLES",
+                type:"SET_FETCHED_USER_TABLES",
                 content:tables
+            })
+        },
+        setTableFilterString:(string) => {
+            dispatch({
+                type:"SET_FILTER_STRING",
+                content:string
             })
         }
     }

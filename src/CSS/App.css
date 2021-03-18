@@ -1,7 +1,7 @@
 .navbar {
     display:flex;
     border-bottom:1px solid black;
-    padding:0.3em
+    padding:0.3em;
 }
 
 .navbar div{

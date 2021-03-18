@@ -43,7 +43,7 @@ function HomePage(props){
             <div className="home-table-bar">
                 <h3>DataTables</h3>
                 <Divider/>
-                <TableSummaryBlock/>
+                <TableSummaryBlock history={props.history}/>
             </div>
         </div>
         </>
@@ -58,7 +58,7 @@ function mapDispatchToProps(dispatch){
     return {
         setUserTables:(tables) => {
             dispatch({
-                type:"SET_USER_TABLES",
+                type:"SET_FETCHED_USER_TABLES",
                 content:tables
             })
         }

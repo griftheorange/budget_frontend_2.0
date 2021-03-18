@@ -19,7 +19,7 @@ export default function(props){
 
     return (
         <div className="navbar">
-            <div><a>Home</a></div>|
+            <div><a onClick={() => {props.history.push('/')}}>Home</a></div>|
             <div><a onClick={handleLogout}>Logout</a></div>|
             <div><a onClick={handleShutdown}>Shutdown Server</a></div>|
             <div><a onClick={handleProfile}><Icon name="user circle"/>{window.localStorage.getItem("id")}</a></div>

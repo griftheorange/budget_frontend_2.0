@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 function TableSummaryBlock(props){
     return (
         <div className="data-tables-block">
-        {props.userTables.length === 0 ? <div className="message">No tables for your profile</div> : (
+        {props.fetchedUserTables.length === 0 ? <div className="message">No tables for your profile</div> : (
             <>
             <div className="header segment">
                 <div className="column">Name</div>
@@ -13,9 +13,9 @@ function TableSummaryBlock(props){
                 <div className="column">Current Balance</div>
                 <div className="column">Seed Balance</div>
             </div>
-            {props.userTables.map((table) => {
+            {props.fetchedUserTables.filter((table)=>{return table.tableName.toLowerCase().includes(props.tableFilterString.toLowerCase())}).map((table) => {
                 return (
-                    <TableSummaryCard table={table} key={table.tableName}/>
+                    <TableSummaryCard table={table} key={table.tableName} history={props.history}/>
                 )
             })}
             </>
@@ -26,7 +26,8 @@ function TableSummaryBlock(props){
 
 function mapStateToProps(state){
     return {
-        userTables:state.userTables
+        fetchedUserTables:state.fetchedUserTables,
+        tableFilterString:state.tableFilterString
     }
 }
 

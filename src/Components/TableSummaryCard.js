@@ -42,7 +42,8 @@ function TableSummaryCard(props){
         })
     }
 
-    const handleDownloadBackup = () => {
+    const handleDownloadBackup = (e) => {
+        e.stopPropagation()
         DBAdapter.downloadBackup(nameValue)
         .then((blob) => {
             const url = window.URL.createObjectURL(blob);
@@ -56,6 +57,10 @@ function TableSummaryCard(props){
         })
     }
 
+    const handleTableRouting = (tableName) => {
+        props.history.push(`/table/${tableName}`)
+    }
+
     return (
         <>
         <Confirm open={openConfirm}
@@ -63,20 +68,22 @@ function TableSummaryCard(props){
                  content={`Are you sure you want to delete this table? Deletions cannot be reversed.`}
                  onCancel={() => {setOpenConfirm(false)}}
                  onConfirm={handleDeleteTable}/>
-        <div className="data-table-card segment">
+        <div className="data-table-card segment" onClick={() => {handleTableRouting(props.table.tableName)}}>
             <Icon name="download" className="download-button" color="grey" onClick={handleDownloadBackup}/>
             <div className="table-name column">
                 <div className="entry-options">
-                    <Icon name="edit" color="grey" onClick={() => {
+                    <Icon name="edit" color="grey" onClick={(e) => {
+                        e.stopPropagation()
                         setNameValue(props.table.tableName)
                         setEditing(!editing)
                     }}/>
-                    <Icon name="delete" color="red" onClick={() => {
+                    <Icon name="delete" color="red" onClick={(e) => {
+                        e.stopPropagation()
                         setOpenConfirm(true)
                     }}/>
                 </div>
                 {editing ? (
-                    <input value={nameValue} onChange={(e) => {setNameValue(e.target.value)}} onKeyDown={handleKeyDown}/>
+                    <input value={nameValue} onClick={(e) => {e.stopPropagation()}} onChange={(e) => {setNameValue(e.target.value)}} onKeyDown={handleKeyDown}/>
                 ) : props.table.tableName}
             </div>
             <div className="number-entries column">{props.table.numberOfEntries}</div>
@@ -114,7 +121,7 @@ function mapDispatchToProps(dispatch){
     return {
         setUserTables:(tables) => {
             dispatch({
-                type:"SET_USER_TABLES",
+                type:"SET_FETCHED_USER_TABLES",
                 content:tables
             })
         }

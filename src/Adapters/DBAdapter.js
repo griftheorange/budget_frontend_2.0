@@ -181,4 +181,40 @@ export default class UserAccountAdaptor {
         .then(this.handleErrors)
         .then(response => response.blob())
     }
+
+    static fetchTableData(tableName){
+        let id = window.localStorage.getItem("id");
+        let token = window.localStorage.getItem("token");
+        return fetch(`${Properties.apiURL}/data-table/${tableName}`, {
+            method:"POST",
+            headers:{
+                'Accept': 'application/json',
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                'id':id,
+                'token':token
+            })
+        })
+        .then(this.handleErrors)
+        .then(response => response.json())
+    }
+
+    static fetchTableCategories(tableName){
+        let id = window.localStorage.getItem("id");
+        let token = window.localStorage.getItem("token");
+        return fetch(`${Properties.apiURL}/category/${tableName}`, {
+            method:"POST",
+            headers:{
+                'Accept': 'application/json',
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                'id':id,
+                'token':token
+            })
+        })
+        .then(this.handleErrors)
+        .then(response => response.json()) 
+    }
 }
