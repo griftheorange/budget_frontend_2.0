@@ -3,6 +3,7 @@ import '../CSS/Table.css'
 import {connect} from 'react-redux'
 import {useState, useEffect} from 'react'
 import {useParams} from 'react-router-dom'
+import {Sidebar, Icon, Dimmer, SidebarPusher} from 'semantic-ui-react'
 import DataTable from '../Components/DataTable'
 import DBAdapter from '../Adapters/DBAdapter'
 
@@ -38,15 +39,28 @@ function TablePage(props){
 
     return (
         <div className="table-page-wrapper">
-            <NavBar history={props.history}/>
-            <div className="table-page-content-wrapper">
-                <div className="chart-menu-display">
+            <Sidebar.Pushable>
+                <Sidebar visible={categorySidebarView} 
+                        animation="overlay" 
+                        vertical
+                        direction='left'>
+                    <Icon className="sidebar-close" name="delete" color="red" size="large"
+                        onClick={() => {setCategorySidebarView(null)}}/>
+                    <h3>Select Category</h3>
+                    <h5>Index of </h5>
+                </Sidebar>
+                <Sidebar.Pusher dimmed={categorySidebarView}>
+                    <NavBar history={props.history}/>
+                    <div className="table-page-content-wrapper">
+                        <div className="chart-menu-display">
 
-                </div>
-                <div className="table-display">
-                    {tableEntries ? <DataTable tableData={tableEntries} tableCategories={dataTableCategories}/> : null}
-                </div>
-            </div>
+                        </div>
+                        <div className="table-display">
+                            {tableEntries ? <DataTable tableData={tableEntries} setCategorySidebarView={setCategorySidebarView}/> : null}
+                        </div>
+                    </div>
+                </Sidebar.Pusher>
+            </Sidebar.Pushable>
         </div>
     )
 }

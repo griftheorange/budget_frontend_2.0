@@ -24,3 +24,21 @@ body {
     display: flex;
     flex-direction: column  ;
 }
+
+.ui.sidebar {
+    background-color: white;
+}
+
+.ui.sidebar.right {
+    border-left:1px solid black
+}
+
+.ui.sidebar.left {
+    border-right:2px solid black
+}
+
+.ui.sidebar i.icon {
+    position:absolute;
+    right:5px;
+    top:5px
+}

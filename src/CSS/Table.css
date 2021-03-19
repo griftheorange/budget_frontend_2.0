@@ -3,6 +3,10 @@
     width:100vw;
 }
 
+.table-page-wrapper .pusher {
+    height:100%;
+}
+
 .table-page-content-wrapper {
     flex-grow: 1;
     display:flex;

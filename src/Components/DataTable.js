@@ -2,7 +2,6 @@ import { Table } from "semantic-ui-react"
 
 export default function(props){
     const tableData = props.tableData
-    const tableCategories = props.tableCategories
     const depth = tableData.Amount ? tableData.Amount.length : 0
 
     const getKeyOrdering = () => {
@@ -18,8 +17,7 @@ export default function(props){
     }
 
     const handleCategoryClick = (key, index) => {
-        console.log(tableCategories)
-        console.log(`Clicked ${key} column index ${index}`)
+        props.setCategorySidebarView(true)
     }
 
     const getCellWithListeners = (key, index) => {
