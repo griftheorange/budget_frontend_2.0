@@ -6,6 +6,7 @@ import {useParams} from 'react-router-dom'
 import {Sidebar, Icon, Button, List} from 'semantic-ui-react'
 import DataTable from '../Components/DataTable'
 import DBAdapter from '../Adapters/DBAdapter'
+import Rerouters from '../Services/Rerouters'
 
 function TablePage(props){
 
@@ -13,6 +14,7 @@ function TablePage(props){
     const [tableEntries, setTableEntries] = useState(null);
     const [categorySidebarView, setCategorySidebarView] = useState(false);
     const [editCategorySelectedRow, setEditCategorySelectedRow] = useState(null);
+    const [selectedMenu, setSelectedMenu] = useState("charts");
     const {tableName} = useParams();
 
     const refreshTableEntries = () => {
@@ -41,6 +43,12 @@ function TablePage(props){
     }
 
     useEffect(() => {
+        Rerouters.refreshTokenOrRerout(props.history, "/login").then((success) => {
+            if(success){
+                refreshTableEntries()
+                refreshTableCategories()
+            }
+        })
         refreshTableEntries()
         refreshTableCategories()
     }, [])
@@ -62,6 +70,21 @@ function TablePage(props){
                 console.error("Error in category edit")
             }
         })
+    }
+
+    const getChartMenuContent = () => {
+        switch(selectedMenu){
+            case "charts":
+                return <div>Charts</div>
+            case "chart settings":
+                return <div>Chart Settings</div>
+            case "accounts":
+                return <div>Accounts</div>
+            case "categories":
+                return <div>Categories</div>
+            case "table":
+                return <div>Table</div>
+        }
     }
 
     return (
@@ -86,7 +109,26 @@ function TablePage(props){
                     <NavBar history={props.history}/>
                     <div className="table-page-content-wrapper">
                         <div className="chart-menu-display">
-
+                            <div className="chart-menu-selector">
+                                <div className={selectedMenu === "charts" ? "option selected" : "option"} onClick={() => {setSelectedMenu("charts")}}>
+                                    <div><Icon name="chart pie" color="grey" size="large"/>Charts</div>
+                                </div>
+                                <div className={selectedMenu === "chart settings" ? "option selected" : "option"} onClick={() => {setSelectedMenu("chart settings")}}>
+                                    <div><Icon name="settings"  color="grey" size="large"/>Chart Settings</div>
+                                </div>
+                                <div className={selectedMenu === "accounts" ? "option selected" : "option"} onClick={() => {setSelectedMenu("accounts")}}>
+                                    <div><Icon name="dollar"  color="grey" size="large"/>Accounts</div>
+                                </div>
+                                <div className={selectedMenu === "categories" ? "option selected" : "option"} onClick={() => {setSelectedMenu("categories")}}>
+                                    <div><Icon name="sort amount down"  color="grey" size="large"/>Categories</div>
+                                </div>
+                                <div className={selectedMenu === "table" ? "option selected" : "option"} onClick={() => {setSelectedMenu("table")}}>
+                                    <div><Icon name="th list"  color="grey" size="large"/>Table</div>
+                                </div>
+                            </div>
+                            <div className="chart-menu-content">
+                                {getChartMenuContent()}
+                            </div>
                         </div>
                         <div className="table-display">
                             {tableEntries ? <DataTable tableData={tableEntries} setCategorySidebarView={setCategorySidebarView} setEditCategorySelectedRow={setEditCategorySelectedRow}/> : null}
