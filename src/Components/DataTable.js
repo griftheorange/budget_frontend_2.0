@@ -16,15 +16,16 @@ export default function(props){
         return [...keys, ...accountKeys.sort()]
     }
 
-    const handleCategoryClick = (key, index) => {
+    const handleCategoryClick = (index) => {
         props.setCategorySidebarView(true)
+        props.setEditCategorySelectedRow(index)
     }
 
     const getCellWithListeners = (key, index) => {
         switch(key){
             case "Type":
                 return (
-                    <td className="table-cell" key={key+index} onClick={() => {handleCategoryClick(key, index)}}>{tableData[key][index]}</td>
+                    <td className="table-cell" key={key+index} onClick={() => {handleCategoryClick(index)}}>{tableData[key][index]}</td>
                 )
             case "Transaction Name":
                 return (

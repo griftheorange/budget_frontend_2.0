@@ -217,4 +217,28 @@ export default class UserAccountAdaptor {
         .then(this.handleErrors)
         .then(response => response.json()) 
     }
+
+    static fetchPatchEntryCategory(tableName, transactionName, date, type, amount, updatedType){
+        let id = window.localStorage.getItem("id");
+        let token = window.localStorage.getItem("token");
+        return fetch(`${Properties.apiURL}/category/edit-category`, {
+            method:"PATCH",
+            headers:{
+                'Accept': 'application/json',
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                'id':id,
+                'token':token,
+                'tableName':tableName,
+                'transactionName':transactionName,
+                'date':date,
+                'type':type,
+                'amount': amount,
+                'newCategory':updatedType
+            })
+        })
+        .then(this.handleErrors)
+        .then(response => response.json())
+    }
 }
