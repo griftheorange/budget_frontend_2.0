@@ -25,22 +25,50 @@ body {
     flex-direction: column  ;
 }
 
-.ui.sidebar {
-    background-color: white;
+.sidebar-overlay.hidden {
+    display: none;
 }
 
-.ui.sidebar.right {
-    border-left:1px solid black
-}
-
-.ui.sidebar.left {
-    border-right:2px solid black
-}
-
-.ui.sidebar i.icon {
+.sidebar-overlay {
     position:absolute;
-    right:5px;
-    top:5px
+    top:0;
+    left:0;
+    width:100vw;
+    height:100vh;
+    background-color: #00000087;
+    animation: fadeIn ease 0.5s
+}
+
+.sidebar-overlay.hidden .sidebar {
+    right:-300px;
+    animation: slideOutRight ease 0.5s;
+}
+
+.sidebar-overlay .sidebar {
+    position:absolute;
+    right: 0;
+    background-color: white;
+    width:300px;
+    height:100%;
+    border-left: 1px solid black;
+    padding:1em;
+    animation: slideInRight ease 0.5s;
+    overflow-y: scroll;
+}
+
+@keyframes slideInRight {
+    0% {right: -300px;}
+    100% {right: 0}
+}
+
+@keyframes slideOutRight {
+    0% {right: 0;}
+    100% {right: -300px}
+}
+
+@keyframes fadeIn {
+    0% {opacity:0;}
+    100% {opacity:1;}
 }
 
 #brandingLogo {

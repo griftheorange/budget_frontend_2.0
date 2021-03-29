@@ -49,6 +49,7 @@
     padding:0.5em;
     margin-top:0.5em;
     margin-bottom: 0.5em;
+    border-bottom: 1px solid #80808036;
 }
 
 #home-page-wrapper .home-table-bar .data-tables-block .data-table-card .column div {

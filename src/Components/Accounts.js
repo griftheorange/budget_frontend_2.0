@@ -1,6 +1,8 @@
 import {useState} from 'react'
 
 import DBAdapter from '../Adapters/DBAdapter'
+import FastSidebar from './FastSidebar'
+
 import {Table, Icon, Confirm} from 'semantic-ui-react'
 
 import '../CSS/Accounts.css'
@@ -8,6 +10,7 @@ import '../CSS/Accounts.css'
 export default function(props){
 
     const [openConfirm, setOpenConfirm] = useState(null);
+    const [editAccountSidebarView, setEditAccountSidebarView] = useState(null);
 
     const handleAddAccount = () => {
         props.setAddAccountSidebarView(true)
@@ -28,6 +31,11 @@ export default function(props){
 
     return (
         <div className='accounts-display-wrapper'>
+            <FastSidebar visible={editAccountSidebarView}>
+                <Icon className="sidebar-close" name="delete" color="red" size="large"
+                      onClick={() => {setEditAccountSidebarView(null)}}/>
+                <h3>Add Account</h3>
+            </FastSidebar>
             <Confirm open={openConfirm}
                  header={openConfirm ? `Delete ${openConfirm.accountName}?` : null}
                  content={`Are you sure you want to delete this account? Deletions cannot be reversed.`}
@@ -54,7 +62,10 @@ export default function(props){
                             <Table.Row key={account.accountName}>
                                 <Table.Cell>{account.accountName}</Table.Cell>
                                 <Table.Cell>{account.seedBalance}</Table.Cell>
-                                <Table.Cell><Icon name='edit' color='grey'/><Icon name='delete' color='red' onClick={() => {setOpenConfirm(account)}}/></Table.Cell>
+                                <Table.Cell>
+                                    <Icon name='edit' color='grey' onClick={() => {setEditAccountSidebarView(account)}}/>
+                                    <Icon name='delete' color='red' onClick={() => {setOpenConfirm(account)}}/>
+                                </Table.Cell>
                             </Table.Row>
                         )
                     })}

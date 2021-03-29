@@ -3,26 +3,33 @@ import '../CSS/Table.css'
 import {connect} from 'react-redux'
 import {useState, useEffect} from 'react'
 import {useParams} from 'react-router-dom'
-import {Sidebar, Icon, Button, List} from 'semantic-ui-react'
+import {Icon} from 'semantic-ui-react'
 
 import Charts from '../Components/Charts'
 import Accounts from '../Components/Accounts'
 import DataTable from '../Components/DataTable'
 import DBAdapter from '../Adapters/DBAdapter'
+import ChartSupportFunctions from '../Services/ChartSupportFunctions'
 import Rerouters from '../Services/Rerouters'
+import FastSidebar from '../Components/FastSidebar'
+import NewAccountForm from '../Forms/NewAccountForm'
+import CategoryUpdateForm from '../Forms/CategoryUpdateForm'
 
 function TablePage(props){
+
+    const {tableName} = useParams();
+    const [lineConfig, setLineConfig] = useState(null)
+
+    const [selectedMenu, setSelectedMenu] = useState("accounts");
 
     const [dataTableCategories, setDataTableCategories] = useState(null);
     const [tableEntries, setTableEntries] = useState(null);
     const [accountDetails, setAccountDetails] = useState([]);
+
     const [categorySidebarView, setCategorySidebarView] = useState(false);
     const [addAccountSidebarView, setAddAccountSidebarView] = useState(false);
     const [editCategorySelectedRow, setEditCategorySelectedRow] = useState(null);
-    const [selectedMenu, setSelectedMenu] = useState("accounts");
-    const [newAccountName, setNewAccountName] = useState("");
-    const [newAccountBalance, setNewAccountBalance] = useState(0.0);
-    const {tableName} = useParams();
+    
 
     const refreshAccountDetails = () => {
         DBAdapter.fetchAccountsDetailsForTable(tableName)
@@ -70,6 +77,12 @@ function TablePage(props){
         refreshAccountDetails()
     }, [])
 
+    useEffect(() => {
+        if(tableEntries){
+            setLineConfig(ChartSupportFunctions.generateLineConfig(tableEntries))
+        }
+    }, [tableEntries])
+
     const handleCategoryUpdate = (selectedCategory) => {
         DBAdapter.fetchPatchEntryCategory(tableName,
                                           tableEntries['Transaction Name'][editCategorySelectedRow],
@@ -89,29 +102,10 @@ function TablePage(props){
         })
     }
 
-    const handleAddAccount = () => {
-        if(newAccountName.trim() === "" || newAccountBalance < 0){
-            console.log("Invalid Input")
-        } else {
-            DBAdapter.fetchAddAccount(tableName, newAccountName, newAccountBalance)
-            .then((response) => {
-                if(response.Success){
-                    setAddAccountSidebarView(false);
-                    setNewAccountName("");
-                    setNewAccountBalance(0);
-                    refreshTableEntries();
-                    refreshAccountDetails();
-                } else {
-                    console.log(response)
-                }
-            })
-        }
-    }
-
     const getChartMenuContent = () => {
         switch(selectedMenu){
             case "charts":
-                return <Charts tableEntries={tableEntries}/>
+                return lineConfig ? <Charts lineConfig={lineConfig}/> : null
             case "chart settings":
                 return <div>Chart Settings</div>
             case "accounts":
@@ -129,74 +123,47 @@ function TablePage(props){
 
     return (
         <div className="table-page-wrapper">
-            <Sidebar.Pushable>
-                <Sidebar visible={categorySidebarView} 
-                        animation="overlay" 
-                        vertical="true"
-                        direction='right'>
-                    <Icon className="sidebar-close" name="delete" color="red" size="large"
-                        onClick={() => {setCategorySidebarView(false)}}/>
-                    <h3>{tableEntries ? tableEntries['Transaction Name'][editCategorySelectedRow] : null}</h3>
-                    <List>
-                        {dataTableCategories ? dataTableCategories.map((category) => {
-                            return (
-                                <List.Item key={category}><Button onClick={() => {handleCategoryUpdate(category)}}>{category}</Button></List.Item>
-                            )
-                        }) : null}
-                    </List>
-                </Sidebar>
-                <Sidebar visible={addAccountSidebarView} 
-                        animation="overlay" 
-                        vertical="true"
-                        direction='right'>
-                    <Icon className="sidebar-close" name="delete" color="red" size="large"
-                        onClick={() => {setAddAccountSidebarView(false)}}/>
-                    <h3>Add Account</h3>
-                    <table className="sidebar-form">
-                        <tbody>
-                            <tr>
-                                <td><label htmlFor='new-account-name'>Name: </label></td>
-                                <td><input id='new-account-name' value={newAccountName} onChange={(e) => {setNewAccountName(e.target.value)}}/></td>
-                            </tr>
-                            <tr>
-                                <td><label htmlFor='new-account-balance'>Seed Balance: </label></td>
-                                <td><input id='new-account-balance' type='number' value={newAccountBalance} onChange={(e) => {setNewAccountBalance(Math.round(e.target.value*100)/100)}}/></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <Button color='blue' onClick={handleAddAccount}>Submit</Button>
-                </Sidebar>
-                <Sidebar.Pusher dimmed={categorySidebarView || addAccountSidebarView}>
-                    <NavBar history={props.history}/>
-                    <div className="table-page-content-wrapper">
-                        <div className="chart-menu-display">
-                            <div className="chart-menu-selector">
-                                <div className={selectedMenu === "charts" ? "option selected" : "option"} onClick={() => {setSelectedMenu("charts")}}>
-                                    <div><Icon name="chart pie" color="grey" size="large"/>Charts</div>
-                                </div>
-                                <div className={selectedMenu === "chart settings" ? "option selected" : "option"} onClick={() => {setSelectedMenu("chart settings")}}>
-                                    <div><Icon name="settings"  color="grey" size="large"/>Chart Settings</div>
-                                </div>
-                                <div className={selectedMenu === "accounts" ? "option selected" : "option"} onClick={() => {setSelectedMenu("accounts")}}>
-                                    <div><Icon name="dollar"  color="grey" size="large"/>Accounts</div>
-                                </div>
-                                <div className={selectedMenu === "categories" ? "option selected" : "option"} onClick={() => {setSelectedMenu("categories")}}>
-                                    <div><Icon name="sort amount down"  color="grey" size="large"/>Categories</div>
-                                </div>
-                                <div className={selectedMenu === "table" ? "option selected" : "option"} onClick={() => {setSelectedMenu("table")}}>
-                                    <div><Icon name="th list"  color="grey" size="large"/>Table</div>
-                                </div>
-                            </div>
-                            <div className="chart-menu-content">
-                                {getChartMenuContent()}
-                            </div>
+            <FastSidebar visible={categorySidebarView}>
+                <CategoryUpdateForm setCategorySidebarView={setCategorySidebarView}
+                                    tableEntries={tableEntries}
+                                    editCategorySelectedRow={editCategorySelectedRow}
+                                    dataTableCategories={dataTableCategories}
+                                    handleCategoryUpdate={handleCategoryUpdate}/>
+            </FastSidebar>
+            <FastSidebar visible={addAccountSidebarView}>
+                <NewAccountForm tableName={tableName}
+                                setAddAccountSidebarView={setAddAccountSidebarView}
+                                refreshAccountDetails={refreshAccountDetails}
+                                refreshTableEntries={refreshTableEntries}/>
+            </FastSidebar>
+            <NavBar history={props.history}/>
+            <div className="table-page-content-wrapper">
+                <div className="chart-menu-display">
+                    <div className="chart-menu-selector">
+                        <div className={selectedMenu === "accounts" ? "option selected" : "option"} onClick={() => {setSelectedMenu("accounts")}}>
+                            <div><Icon name="dollar"  color="grey" size="large"/>Accounts</div>
                         </div>
-                        <div className="table-display">
-                            {tableEntries ? <DataTable tableData={tableEntries} setCategorySidebarView={setCategorySidebarView} setEditCategorySelectedRow={setEditCategorySelectedRow}/> : null}
+                        <div className={selectedMenu === "charts" ? "option selected" : "option"} onClick={() => {setSelectedMenu("charts")}}>
+                            <div><Icon name="chart pie" color="grey" size="large"/>Charts</div>
+                        </div>
+                        <div className={selectedMenu === "chart settings" ? "option selected" : "option"} onClick={() => {setSelectedMenu("chart settings")}}>
+                            <div><Icon name="settings"  color="grey" size="large"/>Chart Settings</div>
+                        </div>
+                        <div className={selectedMenu === "categories" ? "option selected" : "option"} onClick={() => {setSelectedMenu("categories")}}>
+                            <div><Icon name="sort amount down"  color="grey" size="large"/>Categories</div>
+                        </div>
+                        <div className={selectedMenu === "table" ? "option selected" : "option"} onClick={() => {setSelectedMenu("table")}}>
+                            <div><Icon name="th list"  color="grey" size="large"/>Table</div>
                         </div>
                     </div>
-                </Sidebar.Pusher>
-            </Sidebar.Pushable>
+                    <div className="chart-menu-content">
+                        {getChartMenuContent()}
+                    </div>
+                </div>
+                <div className="table-display">
+                    {tableEntries ? <DataTable tableData={tableEntries} setCategorySidebarView={setCategorySidebarView} setEditCategorySelectedRow={setEditCategorySelectedRow}/> : null}
+                </div>
+            </div>
         </div>
     )
 }
