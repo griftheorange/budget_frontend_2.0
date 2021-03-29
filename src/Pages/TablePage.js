@@ -115,7 +115,11 @@ function TablePage(props){
             case "chart settings":
                 return <div>Chart Settings</div>
             case "accounts":
-                return <Accounts tableName={tableName} accountDetails={accountDetails} setAddAccountSidebarView={setAddAccountSidebarView}/>
+                return <Accounts tableName={tableName} 
+                                 accountDetails={accountDetails} 
+                                 setAddAccountSidebarView={setAddAccountSidebarView}
+                                 refreshAccountDetails={refreshAccountDetails}
+                                 refreshTableEntries={refreshTableEntries}/>
             case "categories":
                 return <div>Categories</div>
             case "table":

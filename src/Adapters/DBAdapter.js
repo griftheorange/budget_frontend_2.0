@@ -281,4 +281,25 @@ export default class UserAccountAdaptor {
         .then(this.handleErrors)
         .then(response => response.json())
     }
+
+    static fetchDeleteAccount(tableName, accountName){
+        console.log(tableName, accountName)
+        let id = window.localStorage.getItem("id");
+        let token = window.localStorage.getItem("token");
+        return fetch(`${Properties.apiURL}/account/delete-account`, {
+            method:'DELETE',
+            headers:{
+                'Accept': 'application/json',
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                'tableName':tableName,
+                'accountName':accountName,
+                'id':id,
+                'token':token
+            })
+        })
+        .then(this.handleErrors)
+        .then(response => response.json())
+    }
 }

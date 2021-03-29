@@ -1,22 +1,38 @@
-import {useEffect, useState} from 'react'
+import {useState} from 'react'
 
 import DBAdapter from '../Adapters/DBAdapter'
-import {Table, Icon} from 'semantic-ui-react'
+import {Table, Icon, Confirm} from 'semantic-ui-react'
 
 import '../CSS/Accounts.css'
 
 export default function(props){
+
+    const [openConfirm, setOpenConfirm] = useState(null);
 
     const handleAddAccount = () => {
         props.setAddAccountSidebarView(true)
     }
 
     const handleDeleteAccount = (account) => {
-        console.log("Deleting: ", account)
+        DBAdapter.fetchDeleteAccount(props.tableName, account.accountName)
+        .then((response) => {
+            if(response.Success){
+                setOpenConfirm(null)
+                props.refreshAccountDetails()
+                props.refreshTableEntries()
+            } else {
+                console.log(response)
+            }
+        })
     }
 
     return (
         <div className='accounts-display-wrapper'>
+            <Confirm open={openConfirm}
+                 header={openConfirm ? `Delete ${openConfirm.accountName}?` : null}
+                 content={`Are you sure you want to delete this account? Deletions cannot be reversed.`}
+                 onCancel={() => {setOpenConfirm(null)}}
+                 onConfirm={() => {handleDeleteAccount(openConfirm)}}/>
             <div className='content-title'>
                 <div className='title-split'>
                     <h3>Accounts for "{props.tableName}"</h3>
@@ -38,7 +54,7 @@ export default function(props){
                             <Table.Row key={account.accountName}>
                                 <Table.Cell>{account.accountName}</Table.Cell>
                                 <Table.Cell>{account.seedBalance}</Table.Cell>
-                                <Table.Cell><Icon name='edit' color='grey'/><Icon name='delete' color='red' onClick={() => {handleDeleteAccount(account)}}/></Table.Cell>
+                                <Table.Cell><Icon name='edit' color='grey'/><Icon name='delete' color='red' onClick={() => {setOpenConfirm(account)}}/></Table.Cell>
                             </Table.Row>
                         )
                     })}
