@@ -1,13 +1,15 @@
 import {useState} from 'react'
+import {connect} from 'react-redux'
+import {Table, Icon, Confirm} from 'semantic-ui-react'
 
 import DBAdapter from '../Adapters/DBAdapter'
 import FastSidebar from './FastSidebar'
 
-import {Table, Icon, Confirm} from 'semantic-ui-react'
 
 import '../CSS/Accounts.css'
+import EditAccountDetailsForm from '../Forms/EditAccountDetailsForm'
 
-export default function(props){
+function Accounts(props){
 
     const [openConfirm, setOpenConfirm] = useState(null);
     const [editAccountSidebarView, setEditAccountSidebarView] = useState(null);
@@ -32,9 +34,7 @@ export default function(props){
     return (
         <div className='accounts-display-wrapper'>
             <FastSidebar visible={editAccountSidebarView}>
-                <Icon className="sidebar-close" name="delete" color="red" size="large"
-                      onClick={() => {setEditAccountSidebarView(null)}}/>
-                <h3>Add Account</h3>
+                {editAccountSidebarView ? <EditAccountDetailsForm tableName={props.tableName} account={editAccountSidebarView} setEditAccountSidebarView={setEditAccountSidebarView}/> : null}
             </FastSidebar>
             <Confirm open={openConfirm}
                  header={openConfirm ? `Delete ${openConfirm.accountName}?` : null}
@@ -74,3 +74,11 @@ export default function(props){
         </div>
     )
 }
+
+function mapStateToProps(state){
+    return {
+        accountDetails:state.accountDetails
+    }
+}
+
+export default connect(mapStateToProps)(Accounts)

@@ -32,3 +32,13 @@
 .accounts-display-wrapper table tbody tr td i {
     cursor:pointer
 }
+
+.edit-account-form-wrapper {
+    height:100%;
+    display:flex;
+    flex-direction: column;
+}
+
+.edit-account-form-wrapper h3 {
+    margin-bottom: 0;
+}

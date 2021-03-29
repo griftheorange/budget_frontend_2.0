@@ -1,7 +1,8 @@
 import { Table } from "semantic-ui-react"
+import {connect} from 'react-redux'
 
-export default function(props){
-    const tableData = props.tableData
+function DataTable(props){
+    const tableData = props.tableEntries
     const depth = tableData.Amount ? tableData.Amount.length : 0
 
     const getKeyOrdering = () => {
@@ -73,3 +74,11 @@ export default function(props){
         </table>
     )
 }
+
+function mapStateToProps(state){
+    return {
+        tableEntries:state.tableEntries
+    }
+}
+
+export default connect(mapStateToProps)(DataTable)

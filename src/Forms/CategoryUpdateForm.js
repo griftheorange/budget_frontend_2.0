@@ -1,6 +1,7 @@
 import {Button, Icon, List} from 'semantic-ui-react'
+import {connect} from 'react-redux'
 
-export default function(props){
+function CategoryUpdateForm(props){
     return (
         <>
         <Icon className="sidebar-close" name="delete" color="red" size="large"
@@ -16,3 +17,12 @@ export default function(props){
         </>
     )
 }
+
+function mapStateToProps(state){
+    return {
+        tableEntries:state.tableEntries,
+        dataTableCategories:state.dataTableCategories
+    }
+}
+
+export default connect(mapStateToProps)(CategoryUpdateForm)

@@ -1,7 +1,8 @@
 import {JSCharting} from 'jscharting-react'
+import {connect} from 'react-redux'
 import '../CSS/Charts.css'
 
-export default function(props) {
+function Charts(props) {
     return (
         <div className='charts-display-wrapper'>
             <div className='line-chart'>
@@ -10,3 +11,11 @@ export default function(props) {
         </div>
     )
 }
+
+function mapStateToProps(state){
+    return {
+        lineConfig:state.lineConfig
+    }
+}
+
+export default connect(mapStateToProps)(Charts)

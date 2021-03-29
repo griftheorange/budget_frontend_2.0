@@ -18,13 +18,8 @@ import CategoryUpdateForm from '../Forms/CategoryUpdateForm'
 function TablePage(props){
 
     const {tableName} = useParams();
-    const [lineConfig, setLineConfig] = useState(null)
-
+    
     const [selectedMenu, setSelectedMenu] = useState("accounts");
-
-    const [dataTableCategories, setDataTableCategories] = useState(null);
-    const [tableEntries, setTableEntries] = useState(null);
-    const [accountDetails, setAccountDetails] = useState([]);
 
     const [categorySidebarView, setCategorySidebarView] = useState(false);
     const [addAccountSidebarView, setAddAccountSidebarView] = useState(false);
@@ -35,8 +30,8 @@ function TablePage(props){
         DBAdapter.fetchAccountsDetailsForTable(tableName)
         .then((result) => {
             if(result.Success){
-                setAccountDetails(result.Success)
-            } else { setAccountDetails([]) }
+                props.setAccountDetails(result.Success)
+            } else { props.setAccountDetails([]) }
         })
     }
 
@@ -46,7 +41,7 @@ function TablePage(props){
             if(response.Error){
                 console.error(`Error in fetch: ${response.Error[0]}`)
             } else {
-                setTableEntries({...response, 'Date':response.Date.map((date) => {
+                props.setTableEntries({...response, 'Date':response.Date.map((date) => {
                     let dateObj = new Date(date)
                     return `${dateObj.getFullYear()}-${dateObj.getMonth() < 10 ? '0'+(dateObj.getMonth()+1): dateObj.getMonth()+1}-${dateObj.getDate() < 10 ? '0'+dateObj.getDate() : dateObj.getDate()}`
                 })})
@@ -60,7 +55,7 @@ function TablePage(props){
             if(response.Error){
                 console.error(`Error in fetch:  ${response.Error[0]}`)
             } else {
-                setDataTableCategories(response.Success.sort())
+                props.setDataTableCategories(response.Success.sort())
             }
         })
     }
@@ -78,17 +73,17 @@ function TablePage(props){
     }, [])
 
     useEffect(() => {
-        if(tableEntries){
-            setLineConfig(ChartSupportFunctions.generateLineConfig(tableEntries))
+        if(props.tableEntries){
+            props.setLineConfig(ChartSupportFunctions.generateLineConfig(props.tableEntries))
         }
-    }, [tableEntries])
+    }, [props.tableEntries])
 
     const handleCategoryUpdate = (selectedCategory) => {
         DBAdapter.fetchPatchEntryCategory(tableName,
-                                          tableEntries['Transaction Name'][editCategorySelectedRow],
-                                          tableEntries['Date'][editCategorySelectedRow],
-                                          tableEntries['Type'][editCategorySelectedRow] === "" ? null : tableEntries['Type'][editCategorySelectedRow],
-                                          tableEntries['Amount'][editCategorySelectedRow],
+                                          props.tableEntries['Transaction Name'][editCategorySelectedRow],
+                                          props.tableEntries['Date'][editCategorySelectedRow],
+                                          props.tableEntries['Type'][editCategorySelectedRow] === "" ? null : props.tableEntries['Type'][editCategorySelectedRow],
+                                          props.tableEntries['Amount'][editCategorySelectedRow],
                                           selectedCategory)
         .then((result) => {
             if(result.Success){
@@ -105,12 +100,11 @@ function TablePage(props){
     const getChartMenuContent = () => {
         switch(selectedMenu){
             case "charts":
-                return lineConfig ? <Charts lineConfig={lineConfig}/> : null
+                return <Charts/>
             case "chart settings":
                 return <div>Chart Settings</div>
             case "accounts":
                 return <Accounts tableName={tableName} 
-                                 accountDetails={accountDetails} 
                                  setAddAccountSidebarView={setAddAccountSidebarView}
                                  refreshAccountDetails={refreshAccountDetails}
                                  refreshTableEntries={refreshTableEntries}/>
@@ -125,9 +119,7 @@ function TablePage(props){
         <div className="table-page-wrapper">
             <FastSidebar visible={categorySidebarView}>
                 <CategoryUpdateForm setCategorySidebarView={setCategorySidebarView}
-                                    tableEntries={tableEntries}
                                     editCategorySelectedRow={editCategorySelectedRow}
-                                    dataTableCategories={dataTableCategories}
                                     handleCategoryUpdate={handleCategoryUpdate}/>
             </FastSidebar>
             <FastSidebar visible={addAccountSidebarView}>
@@ -161,7 +153,7 @@ function TablePage(props){
                     </div>
                 </div>
                 <div className="table-display">
-                    {tableEntries ? <DataTable tableData={tableEntries} setCategorySidebarView={setCategorySidebarView} setEditCategorySelectedRow={setEditCategorySelectedRow}/> : null}
+                    {props.tableEntries ? <DataTable setCategorySidebarView={setCategorySidebarView} setEditCategorySelectedRow={setEditCategorySelectedRow}/> : null}
                 </div>
             </div>
         </div>
@@ -169,11 +161,41 @@ function TablePage(props){
 }
 
 function mapStateToProps(state){
-    return {}
+    return {
+        tableEntries:state.tableEntries,
+        dataTableCategories:state.dataTableCategories,
+        accountDetails:state.accountDetails,
+        lineConfig:state.lineConfig
+    }
 }
 
 function mapDispatchToProps(dispatch){
-    return {}
+    return {
+        setTableEntries:(entries) => {
+            dispatch({
+                type:"SET_TABLE_ENTRIES",
+                content:entries
+            })
+        },
+        setDataTableCategories:(categories) => {
+            dispatch({
+                type:"SET_DATA_TABLE_CATEGORIES",
+                content:categories
+            })
+        },
+        setAccountDetails:(details) => {
+            dispatch({
+                type:"SET_ACCOUNT_DETAILS",
+                content:details
+            })
+        },
+        setLineConfig:(lineConfig) => {
+            dispatch({
+                type:"SET_LINE_CONFIG",
+                content:lineConfig
+            })
+        }
+    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TablePage)

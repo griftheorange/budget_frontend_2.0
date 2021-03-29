@@ -41,7 +41,6 @@ body {
 
 .sidebar-overlay.hidden .sidebar {
     right:-300px;
-    animation: slideOutRight ease 0.5s;
 }
 
 .sidebar-overlay .sidebar {
@@ -59,11 +58,6 @@ body {
 @keyframes slideInRight {
     0% {right: -300px;}
     100% {right: 0}
-}
-
-@keyframes slideOutRight {
-    0% {right: 0;}
-    100% {right: -300px}
 }
 
 @keyframes fadeIn {
