@@ -4,6 +4,9 @@ import {connect} from 'react-redux'
 import {useState, useEffect} from 'react'
 import {useParams} from 'react-router-dom'
 import {Sidebar, Icon, Button, List} from 'semantic-ui-react'
+
+import Charts from '../Components/Charts'
+import Accounts from '../Components/Accounts'
 import DataTable from '../Components/DataTable'
 import DBAdapter from '../Adapters/DBAdapter'
 import Rerouters from '../Services/Rerouters'
@@ -12,10 +15,23 @@ function TablePage(props){
 
     const [dataTableCategories, setDataTableCategories] = useState(null);
     const [tableEntries, setTableEntries] = useState(null);
+    const [accountDetails, setAccountDetails] = useState([]);
     const [categorySidebarView, setCategorySidebarView] = useState(false);
+    const [addAccountSidebarView, setAddAccountSidebarView] = useState(false);
     const [editCategorySelectedRow, setEditCategorySelectedRow] = useState(null);
-    const [selectedMenu, setSelectedMenu] = useState("charts");
+    const [selectedMenu, setSelectedMenu] = useState("accounts");
+    const [newAccountName, setNewAccountName] = useState("");
+    const [newAccountBalance, setNewAccountBalance] = useState(0.0);
     const {tableName} = useParams();
+
+    const refreshAccountDetails = () => {
+        DBAdapter.fetchAccountsDetailsForTable(tableName)
+        .then((result) => {
+            if(result.Success){
+                setAccountDetails(result.Success)
+            } else { setAccountDetails([]) }
+        })
+    }
 
     const refreshTableEntries = () => {
         DBAdapter.fetchTableData(tableName)
@@ -51,6 +67,7 @@ function TablePage(props){
         })
         refreshTableEntries()
         refreshTableCategories()
+        refreshAccountDetails()
     }, [])
 
     const handleCategoryUpdate = (selectedCategory) => {
@@ -72,14 +89,33 @@ function TablePage(props){
         })
     }
 
+    const handleAddAccount = () => {
+        if(newAccountName.trim() === "" || newAccountBalance < 0){
+            console.log("Invalid Input")
+        } else {
+            DBAdapter.fetchAddAccount(tableName, newAccountName, newAccountBalance)
+            .then((response) => {
+                if(response.Success){
+                    setAddAccountSidebarView(false);
+                    setNewAccountName("");
+                    setNewAccountBalance(0);
+                    refreshTableEntries();
+                    refreshAccountDetails();
+                } else {
+                    console.log(response)
+                }
+            })
+        }
+    }
+
     const getChartMenuContent = () => {
         switch(selectedMenu){
             case "charts":
-                return <div>Charts</div>
+                return <Charts tableEntries={tableEntries}/>
             case "chart settings":
                 return <div>Chart Settings</div>
             case "accounts":
-                return <div>Accounts</div>
+                return <Accounts tableName={tableName} accountDetails={accountDetails} setAddAccountSidebarView={setAddAccountSidebarView}/>
             case "categories":
                 return <div>Categories</div>
             case "table":
@@ -95,7 +131,7 @@ function TablePage(props){
                         vertical="true"
                         direction='right'>
                     <Icon className="sidebar-close" name="delete" color="red" size="large"
-                        onClick={() => {setCategorySidebarView(null)}}/>
+                        onClick={() => {setCategorySidebarView(false)}}/>
                     <h3>{tableEntries ? tableEntries['Transaction Name'][editCategorySelectedRow] : null}</h3>
                     <List>
                         {dataTableCategories ? dataTableCategories.map((category) => {
@@ -105,7 +141,28 @@ function TablePage(props){
                         }) : null}
                     </List>
                 </Sidebar>
-                <Sidebar.Pusher dimmed={categorySidebarView}>
+                <Sidebar visible={addAccountSidebarView} 
+                        animation="overlay" 
+                        vertical="true"
+                        direction='right'>
+                    <Icon className="sidebar-close" name="delete" color="red" size="large"
+                        onClick={() => {setAddAccountSidebarView(false)}}/>
+                    <h3>Add Account</h3>
+                    <table className="sidebar-form">
+                        <tbody>
+                            <tr>
+                                <td><label htmlFor='new-account-name'>Name: </label></td>
+                                <td><input id='new-account-name' value={newAccountName} onChange={(e) => {setNewAccountName(e.target.value)}}/></td>
+                            </tr>
+                            <tr>
+                                <td><label htmlFor='new-account-balance'>Seed Balance: </label></td>
+                                <td><input id='new-account-balance' type='number' value={newAccountBalance} onChange={(e) => {setNewAccountBalance(Math.round(e.target.value*100)/100)}}/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <Button color='blue' onClick={handleAddAccount}>Submit</Button>
+                </Sidebar>
+                <Sidebar.Pusher dimmed={categorySidebarView || addAccountSidebarView}>
                     <NavBar history={props.history}/>
                     <div className="table-page-content-wrapper">
                         <div className="chart-menu-display">

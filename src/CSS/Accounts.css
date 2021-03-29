@@ -1,0 +1,34 @@
+.accounts-display-wrapper {
+    padding:1em
+}
+
+.accounts-display-wrapper .content-title {
+    border-bottom: 1px solid black;
+    padding-bottom:0.5em;
+    display: flex;
+    width:100%;
+    margin:0;
+}
+
+.accounts-display-wrapper .content-title .title-split {
+    width:50%;
+}
+
+.accounts-display-wrapper .content-title .title-split div {
+    display:flex;
+    float: right;
+}
+
+.accounts-display-wrapper .content-title div h4 {
+    text-align: right;
+    cursor:pointer;
+    color: #556f8ade;
+}
+
+.accounts-display-wrapper .content-title h3, .accounts-display-wrapper .content-title h4 {
+    margin:0
+}
+
+.accounts-display-wrapper table tbody tr td i {
+    cursor:pointer
+}

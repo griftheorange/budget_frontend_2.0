@@ -1,0 +1,9 @@
+.charts-display-wrapper {
+    height:100%;
+    padding:1em;
+    overflow-y: scroll;
+}
+
+.charts-display-wrapper .line-chart {
+    height: 100%
+}

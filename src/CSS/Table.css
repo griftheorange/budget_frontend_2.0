@@ -91,5 +91,21 @@
 
 .table-page-content-wrapper .chart-menu-display .chart-menu-content {
     flex-grow: 1;
-    border:1px solid green
+    border:1px solid grey
+}
+
+.table-page-wrapper .ui.sidebar table {
+    width:100%;
+}
+
+.table-page-wrapper .sidebar-input-field {
+    display:flex;
+}
+
+.table-page-wrapper .sidebar-input-field input {
+    flex-grow: 1;
+}
+
+.table-page-wrapper .ui.sidebar {
+    padding:1em
 }

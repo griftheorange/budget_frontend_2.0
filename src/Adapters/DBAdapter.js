@@ -241,4 +241,44 @@ export default class UserAccountAdaptor {
         .then(this.handleErrors)
         .then(response => response.json())
     }
+
+    static fetchAccountsDetailsForTable(tableName){
+        let id = window.localStorage.getItem("id");
+        let token = window.localStorage.getItem("token");
+        return fetch(`${Properties.apiURL}/account/get-table-accounts`, {
+            method:'POST',
+            headers:{
+                'Accept': 'application/json',
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                'tableName':tableName,
+                'id':id,
+                'token':token
+            })
+        })
+        .then(this.handleErrors)
+        .then(response => response.json())
+    }
+
+    static fetchAddAccount(tableName, accountName, seedBalance){
+        let id = window.localStorage.getItem("id");
+        let token = window.localStorage.getItem("token");
+        return fetch(`${Properties.apiURL}/account/add-account`, {
+            method:'POST',
+            headers:{
+                'Accept': 'application/json',
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                'dataTableName':tableName,
+                'accountName':accountName,
+                'seedBalance':seedBalance,
+                'id':id,
+                'token':token
+            })
+        })
+        .then(this.handleErrors)
+        .then(response => response.json())
+    }
 }

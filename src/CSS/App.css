@@ -42,3 +42,7 @@ body {
     right:5px;
     top:5px
 }
+
+#brandingLogo {
+    display: none;
+}
