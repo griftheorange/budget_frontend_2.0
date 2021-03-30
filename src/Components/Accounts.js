@@ -34,7 +34,7 @@ function Accounts(props){
     return (
         <div className='accounts-display-wrapper'>
             <FastSidebar visible={editAccountSidebarView}>
-                {editAccountSidebarView ? <EditAccountDetailsForm tableName={props.tableName} account={editAccountSidebarView} setEditAccountSidebarView={setEditAccountSidebarView}/> : null}
+                {editAccountSidebarView ? <EditAccountDetailsForm tableName={props.tableName} account={editAccountSidebarView} setEditAccountSidebarView={setEditAccountSidebarView} refreshSuite={[props.refreshAccountDetails, props.refreshTableEntries, props.refreshLineConfig]}/> : null}
             </FastSidebar>
             <Confirm open={openConfirm}
                  header={openConfirm ? `Delete ${openConfirm.accountName}?` : null}

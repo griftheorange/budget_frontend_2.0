@@ -321,4 +321,48 @@ export default class UserAccountAdaptor {
         .then(this.handleErrors)
         .then(response => response.json())
     }
+
+    static patchCategoryAccountRelationships(tableName, accountName, actions){
+        let id = window.localStorage.getItem("id");
+        let token = window.localStorage.getItem("token");
+        return fetch(`${Properties.apiURL}/account/mass-put-category-action`, {
+            method:'POST',
+            headers:{
+                'Accept': 'application/json',
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                'tableName':tableName,
+                'accountName':accountName,
+                'id':id,
+                'token':token,
+                'actions':actions
+            })
+        })
+        .then(this.handleErrors)
+        .then(response => response.json())
+    }
+
+    static patchAccountNameAndValue(tableName, accountName, newAccountName, newAccountBalance){
+        console.log(tableName, accountName, newAccountName, newAccountBalance)
+        let id = window.localStorage.getItem("id");
+        let token = window.localStorage.getItem("token");
+        return fetch(`${Properties.apiURL}/account/edit-account-details`, {
+            method:'POST',
+            headers:{
+                'Accept': 'application/json',
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                'tableName':tableName,
+                'accountName':accountName,
+                'id':id,
+                'token':token,
+                'newAccountName':newAccountName,
+                'newSeedBalance':newAccountBalance
+            })
+        })
+        .then(this.handleErrors)
+        .then(response => response.json())
+    }
 }

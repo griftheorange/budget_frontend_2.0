@@ -9,7 +9,7 @@ export default class ChartSupportFunctions {
         });
     }
     
-    static generateLineConfig(tableEntries){
+    static async generateLineConfig(tableEntries){
         const columnsToExclude = ["Transaction Name", "Date", "Type"]
         const lineCols = Object.keys(tableEntries).filter((key => !columnsToExclude.includes(key))).sort()
         const lineConfig = {

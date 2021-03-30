@@ -42,3 +42,39 @@
 .edit-account-form-wrapper h3 {
     margin-bottom: 0;
 }
+
+.edit-account-form-wrapper .account-name-seed-block {
+    font-weight: bold;
+    border-bottom: 1px solid black;
+}
+
+.edit-account-form-wrapper .category-relationships {
+    display:flex;
+    flex-wrap: wrap;
+}
+
+.edit-account-form-wrapper .category-relationships .relationship-card {
+    width:100%;
+    border-bottom:1px solid #80808080;
+    padding:0.5em;
+    font-weight: bold;
+    border-right:1px solid #80808080;
+
+}
+.edit-account-form-wrapper .category-relationships .relationship-card .radio-field {
+    font-weight: normal;
+    display:flex;
+}
+
+.edit-account-form-wrapper .category-relationships .relationship-card .radio-field div {
+    margin:auto;
+    display:block
+}
+
+.edit-account-form-wrapper .category-relationships .relationship-card .radio-field div input {
+    color:black
+}
+
+.edit-account-form-wrapper .category-relationships .relationship-card .radio-field div label {
+    padding-left: 0.2em;
+}

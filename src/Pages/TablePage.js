@@ -60,6 +60,13 @@ function TablePage(props){
         })
     }
 
+    const refreshLineConfig = () => {
+        ChartSupportFunctions.generateLineConfig(props.tableEntries)
+        .then((config) => {
+            props.setLineConfig(config)
+        })
+    }
+
     useEffect(() => {
         Rerouters.refreshTokenOrRerout(props.history, "/login").then((success) => {
             if(success){
@@ -74,7 +81,7 @@ function TablePage(props){
 
     useEffect(() => {
         if(props.tableEntries){
-            props.setLineConfig(ChartSupportFunctions.generateLineConfig(props.tableEntries))
+            refreshLineConfig()
         }
     }, [props.tableEntries])
 
@@ -107,7 +114,8 @@ function TablePage(props){
                 return <Accounts tableName={tableName} 
                                  setAddAccountSidebarView={setAddAccountSidebarView}
                                  refreshAccountDetails={refreshAccountDetails}
-                                 refreshTableEntries={refreshTableEntries}/>
+                                 refreshTableEntries={refreshTableEntries}
+                                 refreshLineConfig={refreshLineConfig}/>
             case "categories":
                 return <div>Categories</div>
             case "table":
