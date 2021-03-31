@@ -61,7 +61,7 @@ function Accounts(props){
                         return (
                             <Table.Row key={account.accountName}>
                                 <Table.Cell>{account.accountName}</Table.Cell>
-                                <Table.Cell>{account.seedBalance}</Table.Cell>
+                                <Table.Cell>${account.seedBalance}</Table.Cell>
                                 <Table.Cell>
                                     <Icon name='edit' color='grey' onClick={() => {setEditAccountSidebarView(account)}}/>
                                     <Icon name='delete' color='red' onClick={() => {setOpenConfirm(account)}}/>
